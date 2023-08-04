@@ -1,8 +1,14 @@
+import {Header} from "@/components/Header";
+import {Footer} from "@/components/Footer";
+
 const Users = () => {
-    return (
-        <div>
-            Hey from the Index
-        </div>
+    return (<>
+            <Header/>
+            <main className="flex-grow max-w-md mx-auto w-full">
+                Hey from the Users
+            </main>
+            <Footer/>
+        </>
     )
 }
 
