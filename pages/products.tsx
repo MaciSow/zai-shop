@@ -1,7 +1,7 @@
 import {InferGetServerSidePropsType} from "next";
-import {Product, ProductProps} from "@/components/Product";
+import {ProductListItem, ProductListItemData} from "@/components/ProductListItem";
 
-interface StoreApiResponse {
+export interface StoreApiResponse {
     id: number;
     title: string;
     price: number;
@@ -15,18 +15,17 @@ interface StoreApiResponse {
 }
 
 const ProductsPage = ({data}: InferGetServerSidePropsType<typeof getStaticProps>) => {
-    const getPreparedData = (storeData: StoreApiResponse): ProductProps["data"] => (
+    const getPreparedData = (storeData: StoreApiResponse): ProductListItemData => (
         {
+            id: storeData.id,
             title: storeData.title,
-            description: storeData.description,
-            rating: storeData.rating.rate,
             imageSrc: storeData.image,
             imageAlt: storeData.title
         }
     )
 
     return <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {data.map(product => <Product key={product.id} data={getPreparedData(product)}/>)}
+        {data.map(product => <ProductListItem key={product.id} data={getPreparedData(product)}/>)}
     </div>
 }
 

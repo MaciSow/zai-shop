@@ -1,14 +1,17 @@
-export interface ProductProps {
-    data: {
-        title: string,
-        imageSrc: string,
-        imageAlt: string,
-        description: string,
-        rating: number
-    }
+export interface ProductData {
+    id: number
+    title: string,
+    imageSrc: string,
+    imageAlt: string,
+    description: string,
+    rating: number
 }
 
-export const Product = ({data}: ProductProps) => {
+interface ProductProps {
+    data: ProductData
+}
+
+export const ProductDetails = ({data}: ProductProps) => {
     return (
         <div className="flex flex-col gap-4 p-4 border-blue-300 border-2 rounded-md">
             <span className="text-xl font-bold">{data.title}</span>
