@@ -1,4 +1,5 @@
 import Image from "next/image";
+import ReactMarkdown from "react-markdown";
 
 export interface ProductData {
     id: string
@@ -22,6 +23,9 @@ export const ProductDetails = ({data}: ProductProps) => {
                 <Image src={data.imageSrc} alt={data.imageAlt} fill className="object-contain" sizes="500px" priority/>
             </div>
             <span>{data.description}</span>
+            <article className="prose lg:prose-xl">
+                <ReactMarkdown>{data.longDescription}</ReactMarkdown>
+            </article>
             <span className="text-blue-800 font-bold">{data.rating}</span>
         </div>)
 }
