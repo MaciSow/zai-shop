@@ -1,6 +1,7 @@
 import {GetStaticPathsResult, GetStaticPropsContext, InferGetStaticPropsType} from "next";
 import {StoreApiResponse} from "@/pages/products";
 import {ProductData, ProductDetails} from "@/components/ProductDetails";
+import {NextSeo} from "next-seo";
 
 const ProductIdPage = ({data}: InferGetStaticPropsType<typeof getStaticProps>) => {
     if (!data) {
@@ -18,6 +19,7 @@ const ProductIdPage = ({data}: InferGetStaticPropsType<typeof getStaticProps>) =
     }
 
     return <div>
+        <NextSeo title={data.title} description={data.description}/>
         <ProductDetails data={preparedData}/>
     </div>
 }
