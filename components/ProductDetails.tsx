@@ -1,11 +1,12 @@
 import Image from "next/image";
 
 export interface ProductData {
-    id: number
+    id: string
     title: string,
     imageSrc: string,
     imageAlt: string,
     description: string,
+    longDescription: string,
     rating: number
 }
 

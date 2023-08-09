@@ -2,10 +2,11 @@ import {InferGetServerSidePropsType} from "next";
 import {ProductListItem, ProductListItemData} from "@/components/ProductListItem";
 
 export interface StoreApiResponse {
-    id: number;
+    id: string;
     title: string;
     price: number;
     description: string;
+    longDescription: string;
     category: string;
     image: string;
     rating: {
@@ -32,7 +33,7 @@ const ProductsPage = ({data}: InferGetServerSidePropsType<typeof getStaticProps>
 export default ProductsPage
 
 export const getStaticProps = async () => {
-    const res = await fetch(`https://fakestoreapi.com/products/`);
+    const res = await fetch(`https://naszsklep-api.vercel.app/api/products`);
     const data: StoreApiResponse[] = await res.json();
 
     return {
