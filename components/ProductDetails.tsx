@@ -1,5 +1,6 @@
 import Image from "next/image";
-import ReactMarkdown from "react-markdown";
+import {CustomMarkdown} from "@/components/CustomMarkdown";
+import {MDXRemoteSerializeResult} from "next-mdx-remote";
 
 export interface ProductData {
     id: string
@@ -7,7 +8,7 @@ export interface ProductData {
     imageSrc: string,
     imageAlt: string,
     description: string,
-    longDescription: string,
+    longDescription: MDXRemoteSerializeResult,
     rating: number
 }
 
@@ -23,9 +24,7 @@ export const ProductDetails = ({data}: ProductProps) => {
                 <Image src={data.imageSrc} alt={data.imageAlt} fill className="object-contain" sizes="500px" priority/>
             </div>
             <span>{data.description}</span>
-            <article className="prose lg:prose-xl">
-                <ReactMarkdown>{data.longDescription}</ReactMarkdown>
-            </article>
+            <CustomMarkdown text={data.longDescription}/>
             <span className="text-blue-800 font-bold">{data.rating}</span>
         </div>)
 }
