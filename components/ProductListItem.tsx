@@ -14,8 +14,10 @@ export const ProductListItem = ({data}: Props) => {
 
     const handleClick = () => {
         addItem({
+            id: data.id,
             title: data.title,
-            price: 1231
+            price: 1231,
+            count: 1
         })
     }
 
