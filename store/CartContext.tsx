@@ -1,4 +1,4 @@
-import {createContext, PropsWithChildren, useContext, useState} from "react";
+import {createContext, PropsWithChildren, useContext, useEffect, useState} from "react";
 
 interface CartItem {
     id: string,
@@ -13,11 +13,49 @@ interface CartState {
     removeItem: (id: string) => void
 }
 
+const getCartItemsFromStorage = () => {
+
+    const localStorageItems = localStorage.getItem('shopping_cart')
+
+    if (!localStorageItems) {
+        return []
+    }
+
+    try {
+        const items = JSON.parse(localStorageItems)
+        console.log("getFrom", items.length)
+        return items
+    } catch (e) {
+        console.error(e)
+        return []
+    }
+}
+
+const setCartItemInStorage = (cartItems: CartItem[]) => {
+    console.log('setIn', cartItems.length)
+    localStorage.setItem('shopping_cart', JSON.stringify(cartItems))
+}
+
 const CartContext = createContext<CartState | null>(null);
 
 export const CartContextProvider = ({children}: PropsWithChildren) => {
+    const [firstFlag, setFirstFlag] = useState(true)
     const [cartItems, setCartItems] = useState<CartItem[]>([])
 
+    useEffect(() => {
+        setCartItems(getCartItemsFromStorage())
+    }, [])
+
+    useEffect(() => {
+        if (firstFlag) {
+            setFirstFlag(false)
+            if (cartItems.length === 0) {
+                return
+            }
+        }
+
+        setCartItemInStorage(cartItems)
+    }, [cartItems])
 
     const addItem = (item: CartItem) => {
         setCartItems((prevState) => {
