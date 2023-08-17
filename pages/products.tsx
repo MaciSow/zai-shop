@@ -1,41 +1,34 @@
 import {InferGetServerSidePropsType} from "next";
 import {ProductListItem, ProductListItemData} from "@/components/ProductListItem";
+import {apolloClient} from "@/graphql/apolloClient";
+import {
+    GetAllProductsDocument,
+    GetAllProductsQuery
+} from "@/generated/graphql";
 
-export interface StoreApiResponse {
-    id: string;
-    title: string;
-    price: number;
-    description: string;
-    longDescription: string;
-    category: string;
-    image: string;
-    rating: {
-        rate: number;
-        count: number;
-    };
-}
+type ProductsItem = GetAllProductsQuery["products"][number]
 
 const ProductsPage = ({data}: InferGetServerSidePropsType<typeof getStaticProps>) => {
-    const getPreparedData = (storeData: StoreApiResponse): ProductListItemData => (
+    const getPreparedData = (storeData: ProductsItem): ProductListItemData => (
         {
-            id: storeData.id,
-            title: storeData.title,
-            imageSrc: storeData.image,
-            imageAlt: storeData.title
+            id: storeData.slug,
+            title: storeData.name,
+            imageSrc: storeData.images[0].url,
+            imageAlt: storeData.name
         }
     )
 
     return <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {data.map(product => <ProductListItem key={product.id} data={getPreparedData(product)}/>)}
+        {data.products.map(product => <ProductListItem key={product.slug} data={getPreparedData(product)}/>)}
     </div>
 }
 
 export default ProductsPage
 
 export const getStaticProps = async () => {
-    const res = await fetch(`https://naszsklep-api.vercel.app/api/products`);
-    const data: StoreApiResponse[] = await res.json();
-
+    const {data} = await apolloClient.query<GetAllProductsQuery>({
+        query: GetAllProductsDocument
+    })
     return {
         props: {
             data
