@@ -22,9 +22,7 @@ const getCartItemsFromStorage = () => {
     }
 
     try {
-        const items = JSON.parse(localStorageItems)
-        console.log("getFrom", items.length)
-        return items
+        return JSON.parse(localStorageItems)
     } catch (e) {
         console.error(e)
         return []
@@ -32,7 +30,6 @@ const getCartItemsFromStorage = () => {
 }
 
 const setCartItemInStorage = (cartItems: CartItem[]) => {
-    console.log('setIn', cartItems.length)
     localStorage.setItem('shopping_cart', JSON.stringify(cartItems))
 }
 
