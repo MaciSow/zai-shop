@@ -3,6 +3,7 @@ import {yupResolver} from "@hookform/resolvers/yup";
 import * as yup from "yup"
 import {Input} from "@/components/Input";
 import {Select} from "@/components/Select";
+import {useCreateCheckoutDataMutation} from "@/generated/types-and-hooks";
 
 const checkoutFormSchema = yup
   .object({
@@ -19,13 +20,25 @@ const checkoutFormSchema = yup
 type CheckoutData = yup.InferType<typeof checkoutFormSchema>
 
 export const CheckoutForm = () => {
+  const [createCheckout, createdCheckoutResult] = useCreateCheckoutDataMutation()
+
   const {register, formState: {errors}, handleSubmit} = useForm<CheckoutData>({
     resolver: yupResolver(checkoutFormSchema),
   })
 
-  const onSubmit = handleSubmit((data) => {
-    console.log(data)
+  const onSubmit = handleSubmit(async (data) => {
+    await createCheckout({
+      variables: {
+        checkoutData: data
+      }
+    })
   })
+
+  if (createdCheckoutResult.data?.checkoutId) {
+    const {id} = createdCheckoutResult.data.checkoutId
+
+    return <h2 className="text-base font-semibold leading-7">Your new checkout: {id}</h2>
+  }
 
 
   return (
