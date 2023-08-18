@@ -6,7 +6,7 @@ import {apolloClient} from "@/graphql/apolloClient";
 import {
     GetProductDetailsBySlugDocument,
     GetProductDetailsBySlugQuery, GetProductDetailsBySlugQueryVariables, GetProductsSlugsDocument, GetProductsSlugsQuery
-} from "@/generated/graphql";
+} from "@/generated/types-and-hooks";
 
 const ProductIdPage = ({data}: InferGetStaticPropsType<typeof getStaticProps>) => {
     if (!data) {

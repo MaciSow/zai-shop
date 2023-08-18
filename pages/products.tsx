@@ -4,7 +4,7 @@ import {apolloClient} from "@/graphql/apolloClient";
 import {
     GetAllProductsDocument,
     GetAllProductsQuery
-} from "@/generated/graphql";
+} from "@/generated/types-and-hooks";
 
 type ProductsItem = GetAllProductsQuery["products"][number]
 
