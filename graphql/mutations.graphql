@@ -1,0 +1,11 @@
+mutation CreateProductReview ($review: ReviewCreateInput!){
+    review: createReview(data: $review){
+        id
+    }
+}
+
+mutation CreateCheckoutData($checkoutData: CheckoutCreateInput!) {
+    checkoutId: createCheckout(data: $checkoutData) {
+        id
+    }
+}

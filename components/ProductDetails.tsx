@@ -18,7 +18,7 @@ interface ProductProps {
 
 export const ProductDetails = ({data}: ProductProps) => {
     return (
-        <div className="flex flex-col gap-4 p-4 border-blue-300 border-2 rounded-md">
+        <div className="flex flex-col gap-4">
             <span className="text-xl font-bold">{data.title}</span>
             <div className="relative w-full h-[500px] bg-white">
                 <Image src={data.imageSrc} alt={data.imageAlt} fill className="object-contain" sizes="500px" priority/>
