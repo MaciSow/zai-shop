@@ -9,3 +9,9 @@ mutation CreateCheckoutData($checkoutData: CheckoutCreateInput!) {
     id
   }
 }
+
+mutation AddMemberToNewsletter(	$memberData: NewsletterCreateInput!){
+  createNewsletter(data:$memberData) {
+    id
+  }
+}
