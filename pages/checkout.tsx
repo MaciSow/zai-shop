@@ -1,9 +1,11 @@
-import {CheckoutForm} from "@/components/CheckoutForm";
+import { CheckoutForm } from '@/components/CheckoutForm';
 
 const CheckoutPage = () => {
-  return <div>
-    <CheckoutForm/>
-  </div>
-}
+  return (
+    <div>
+      <CheckoutForm />
+    </div>
+  );
+};
 
-export default CheckoutPage
+export default CheckoutPage;

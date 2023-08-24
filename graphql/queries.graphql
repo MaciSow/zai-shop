@@ -1,28 +1,27 @@
 query GetProductsSlugs {
-    products {
-        slug
-    }
+  products {
+    slug
+  }
 }
 
 query GetProductDetailsBySlug($slug: String) {
-    product(where: {slug: $slug}) {
-        slug
-        name
-        price
-        description
-        images {
-            url
-        }
+  product(where: { slug: $slug }) {
+    slug
+    name
+    price
+    description
+    images {
+      url
     }
+  }
 }
 
-
 query GetAllProducts {
-    products {
-        slug
-        name
-        images(first:1) {
-            url
-        }
+  products {
+    slug
+    name
+    images(first: 1) {
+      url
     }
+  }
 }

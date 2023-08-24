@@ -1,3 +1,3 @@
-const Users = () => <>Hey from the Users</>
+const Users = () => <>Hey from the Users</>;
 
-export default Users
+export default Users;

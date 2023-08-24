@@ -1,45 +1,47 @@
-import {useForm} from "react-hook-form";
-import {yupResolver} from "@hookform/resolvers/yup";
-import * as yup from "yup"
-import {Input} from "@/components/Input";
-import {Select} from "@/components/Select";
-import {useCreateCheckoutDataMutation} from "@/generated/types-and-hooks";
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import { Input } from '@/components/Input';
+import { Select } from '@/components/Select';
+import { useCreateCheckoutDataMutation } from '@/generated/types-and-hooks';
 
-const checkoutFormSchema = yup
-  .object({
-    firstName: yup.string().required("Name is required"),
-    lastName: yup.string().required("Surname is required"),
-    email: yup.string().email("This isn't email format").required("Email is required"),
-    country: yup.string().required("Country is required"),
-    streetAddress: yup.string().required("Street address is required"),
-    city: yup.string().required("City is required"),
-    region: yup.string().required("Region is required"),
-    postalCode: yup.string().required("Postal code is required"),
-  })
+const checkoutFormSchema = yup.object({
+  firstName: yup.string().required('Name is required'),
+  lastName: yup.string().required('Surname is required'),
+  email: yup.string().email("This isn't email format").required('Email is required'),
+  country: yup.string().required('Country is required'),
+  streetAddress: yup.string().required('Street address is required'),
+  city: yup.string().required('City is required'),
+  region: yup.string().required('Region is required'),
+  postalCode: yup.string().required('Postal code is required'),
+});
 
-type CheckoutData = yup.InferType<typeof checkoutFormSchema>
+type CheckoutData = yup.InferType<typeof checkoutFormSchema>;
 
 export const CheckoutForm = () => {
-  const [createCheckout, createdCheckoutResult] = useCreateCheckoutDataMutation()
+  const [createCheckout, createdCheckoutResult] = useCreateCheckoutDataMutation();
 
-  const {register, formState: {errors}, handleSubmit} = useForm<CheckoutData>({
+  const {
+    register,
+    formState: { errors },
+    handleSubmit,
+  } = useForm<CheckoutData>({
     resolver: yupResolver(checkoutFormSchema),
-  })
+  });
 
   const onSubmit = handleSubmit(async (data) => {
     await createCheckout({
       variables: {
-        checkoutData: data
-      }
-    })
-  })
+        checkoutData: data,
+      },
+    });
+  });
 
   if (createdCheckoutResult.data?.checkoutId) {
-    const {id} = createdCheckoutResult.data.checkoutId
+    const { id } = createdCheckoutResult.data.checkoutId;
 
-    return <h2 className="text-base font-semibold leading-7">Your new checkout: {id}</h2>
+    return <h2 className="text-base font-semibold leading-7">Your new checkout: {id}</h2>;
   }
-
 
   return (
     <form onSubmit={onSubmit}>
@@ -62,7 +64,7 @@ export const CheckoutForm = () => {
               label="Last name"
               type="text"
               autoComplete="family-name"
-              register={register("lastName")}
+              register={register('lastName')}
               errorMessage={errors.lastName?.message}
             />
           </div>
@@ -72,18 +74,17 @@ export const CheckoutForm = () => {
               label="Email address"
               type="email"
               autoComplete="email"
-              register={register("email")}
+              register={register('email')}
               errorMessage={errors.email?.message}
             />
           </div>
-
 
           <div className="sm:col-span-3">
             <Select
               label="Country"
               autoComplete="country-name"
               options={['USA', 'Canada', 'Mexico']}
-              register={register("country")}
+              register={register('country')}
               errorMessage={errors.country?.message}
             />
           </div>
@@ -93,7 +94,7 @@ export const CheckoutForm = () => {
               label="Street address"
               type="text"
               autoComplete="street-address"
-              register={register("streetAddress")}
+              register={register('streetAddress')}
               errorMessage={errors.streetAddress?.message}
             />
           </div>
@@ -103,7 +104,7 @@ export const CheckoutForm = () => {
               label="City"
               type="text"
               autoComplete="address-level2"
-              register={register("city")}
+              register={register('city')}
               errorMessage={errors.city?.message}
             />
           </div>
@@ -113,7 +114,7 @@ export const CheckoutForm = () => {
               label="State / Province"
               type="text"
               autoComplete="address-level1"
-              register={register("region")}
+              register={register('region')}
               errorMessage={errors.region?.message}
             />
           </div>
@@ -123,7 +124,7 @@ export const CheckoutForm = () => {
               label="Postal code"
               type="text"
               autoComplete="postal-code"
-              register={register("postalCode")}
+              register={register('postalCode')}
               errorMessage={errors.postalCode?.message}
             />
           </div>
@@ -142,5 +143,5 @@ export const CheckoutForm = () => {
         </button>
       </div>
     </form>
-  )
-}
+  );
+};

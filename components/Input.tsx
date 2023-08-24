@@ -1,13 +1,13 @@
-import {ComponentProps} from "react";
-import {UseFormRegisterReturn} from "react-hook-form";
+import { ComponentProps } from 'react';
+import { UseFormRegisterReturn } from 'react-hook-form';
 
-interface Props extends ComponentProps<"input"> {
-  label?: string
-  errorMessage?: string
-  register: UseFormRegisterReturn
+interface Props extends ComponentProps<'input'> {
+  label?: string;
+  errorMessage?: string;
+  register: UseFormRegisterReturn;
 }
 
-export const Input = ({label, register, errorMessage, ...rest}: Props) => {
+export const Input = ({ label, register, errorMessage, ...rest }: Props) => {
   return (
     <div>
       <label htmlFor={register?.name} className="block text-sm font-medium leading-6 text-gray-900">
@@ -23,5 +23,4 @@ export const Input = ({label, register, errorMessage, ...rest}: Props) => {
       </div>
     </div>
   );
-}
-
+};
