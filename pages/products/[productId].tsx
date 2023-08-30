@@ -11,6 +11,7 @@ import {
   GetProductsSlugsQuery,
 } from '@/generated/types-and-hooks';
 import { ReviewForm } from '@/components/ReviewForm';
+import { ProductReviewList } from '@/components/ProductReviewList';
 
 const ProductIdPage = ({ data }: InferGetStaticPropsType<typeof getStaticProps>) => {
   if (!data) {
@@ -32,6 +33,7 @@ const ProductIdPage = ({ data }: InferGetStaticPropsType<typeof getStaticProps>)
       <NextSeo title={data.name} description={data.description} />
       <ProductDetails data={preparedData} />
       <ReviewForm slug={data.slug} />
+      <ProductReviewList slug={data.slug} />
     </div>
   );
 };

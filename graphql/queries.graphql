@@ -25,3 +25,18 @@ query GetAllProducts {
     }
   }
 }
+
+fragment reviewContent on Review {
+  id
+  headline
+  content
+  rating
+}
+
+query GetProductReviews($slug: String!) {
+  product(where: {slug: $slug}) {
+    reviews {
+      ...reviewContent
+    }
+  }
+}

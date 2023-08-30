@@ -1,6 +1,9 @@
-mutation CreateProductReview($review: ReviewCreateInput!) {
+mutation CreateProductReview($review: ReviewCreateInput!, $email: String!) {
   review: createReview(data: $review) {
-    id
+    ...reviewContent
+  }
+  publishManyReviews(where: {email: $email}) {
+    count
   }
 }
 

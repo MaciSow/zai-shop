@@ -2,6 +2,8 @@ import { Input } from '@/components/Input';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
+  GetProductReviewsDocument,
+  GetProductReviewsQuery,
   MutationCreateReviewArgs,
   ReviewCreateInput,
   useCreateProductReviewMutation,
@@ -17,8 +19,34 @@ interface Props {
 }
 
 export const ReviewForm = ({ slug }: Props) => {
-  const { register, handleSubmit } = useForm<ReviewFormData>();
-  const [createReview, { data: successData }] = useCreateProductReviewMutation();
+  const { register, handleSubmit, reset } = useForm<ReviewFormData>();
+  const [createReview, { data: successData }] = useCreateProductReviewMutation({
+    // refetchQueries: [{ query: GetProductReviewsDocument, variables: { slug } }], //without optimistic loading
+    update(cache, { data }) {
+      const originalReviewsQuery = cache.readQuery<GetProductReviewsQuery>({
+        query: GetProductReviewsDocument,
+        variables: { slug },
+      });
+
+      if (!originalReviewsQuery?.product?.reviews || !data?.review) {
+        return null;
+      }
+
+      const newReviewsQuery: GetProductReviewsQuery = {
+        ...originalReviewsQuery,
+        product: {
+          ...originalReviewsQuery.product,
+          reviews: [...originalReviewsQuery.product.reviews, data.review],
+        },
+      };
+
+      cache.writeQuery({
+        query: GetProductReviewsDocument,
+        variables: { slug },
+        data: newReviewsQuery,
+      });
+    },
+  });
 
   const onSubmit = handleSubmit(async (data) => {
     const preparedReview: ReviewCreateInput = {
@@ -31,13 +59,19 @@ export const ReviewForm = ({ slug }: Props) => {
     await createReview({
       variables: {
         review: preparedReview,
+        email: preparedReview.email,
+      },
+      optimisticResponse: {
+        review: {
+          id: (-Math.random()).toString(),
+          ...preparedReview,
+        },
+        publishManyReviews: { count: 0 },
       },
     });
-  });
 
-  if (successData) {
-    return <h2 className="text-base font-semibold leading-7 mt-8">Sent successful</h2>;
-  }
+    reset();
+  });
 
   return (
     <form onSubmit={onSubmit}>
