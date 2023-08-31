@@ -1,4 +1,4 @@
-import { NewsletterForm } from '@/components/NewsletterForm';
+import { NewsletterForm, NewsletterFormView } from '@/components/NewsletterForm';
 
 export default function Home() {
   return (

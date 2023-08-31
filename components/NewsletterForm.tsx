@@ -13,6 +13,25 @@ type NewsletterData = yup.InferType<typeof newsletterFormSchema>;
 export const NewsletterForm = () => {
   const [isSuccess, setSuccess] = useState(false);
 
+  const sentData = async (data: NewsletterData) => {
+    const { ok } = await fetch('http://localhost:3000/api/newsletter', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data),
+    });
+
+    setSuccess(ok);
+  };
+
+  return <NewsletterFormView status={isSuccess} onSubmit={sentData} />;
+};
+
+interface Props {
+  status: boolean;
+  onSubmit: (data: NewsletterData) => void;
+}
+
+export const NewsletterFormView = ({ status, onSubmit }: Props) => {
   const {
     register,
     formState: { errors },
@@ -21,22 +40,12 @@ export const NewsletterForm = () => {
     resolver: yupResolver(newsletterFormSchema),
   });
 
-  const onSubmit = handleSubmit(async (data) => {
-    const { ok } = await fetch('http://localhost:3000/api/newsletter', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    });
-
-    setSuccess(ok);
-  });
-
-  if (isSuccess) {
+  if (status) {
     return <div data-testid="newsletter-success">You are on the list 🎉</div>;
   }
 
   return (
-    <form onSubmit={onSubmit}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div className="sm:col-span-4">
         <Input
           data-testid="newsletter-input"
