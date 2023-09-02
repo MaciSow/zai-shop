@@ -1,5 +1,4 @@
 import { render, screen } from '@testing-library/react';
-import '@testing-library/jest-dom';
 import { NewsletterFormView } from '@/components/NewsletterForm';
 import { jest, describe, expect, it } from '@jest/globals';
 
