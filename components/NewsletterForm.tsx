@@ -23,15 +23,15 @@ export const NewsletterForm = () => {
     setSuccess(ok);
   };
 
-  return <NewsletterFormView status={isSuccess} onSubmit={sentData} />;
+  return <NewsletterFormView success={isSuccess} onSubmit={sentData} />;
 };
 
 interface Props {
-  status: boolean;
+  success: boolean;
   onSubmit: (data: NewsletterData) => void;
 }
 
-export const NewsletterFormView = ({ status, onSubmit }: Props) => {
+export const NewsletterFormView = ({ success, onSubmit }: Props) => {
   const {
     register,
     formState: { errors },
@@ -40,7 +40,7 @@ export const NewsletterFormView = ({ status, onSubmit }: Props) => {
     resolver: yupResolver(newsletterFormSchema),
   });
 
-  if (status) {
+  if (success) {
     return <div data-testid="newsletter-success">You are on the list 🎉</div>;
   }
 
