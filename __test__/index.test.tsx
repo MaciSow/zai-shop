@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { NewsletterFormView } from '@/components/NewsletterForm';
-import { jest } from '@jest/globals';
+import { jest, describe, expect, it } from '@jest/globals';
 
 describe('Home', () => {
   it('show success message', () => {
