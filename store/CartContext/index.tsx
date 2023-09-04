@@ -1,17 +1,6 @@
 import { createContext, PropsWithChildren, useContext, useEffect, useState } from 'react';
-
-interface CartItem {
-  id: string;
-  price: number;
-  title: string;
-  count: number;
-}
-
-interface CartState {
-  items: CartItem[];
-  addItem: (item: CartItem) => void;
-  removeItem: (id: string) => void;
-}
+import { CartItem, CartState } from '@/store/CartContext/cartTypes';
+import { getCartWithNewItem, getCartWithoutItem } from '@/store/CartContext/cartUtils';
 
 const getCartItemsFromStorage = () => {
   const localStorageItems = localStorage.getItem('shopping_cart');
@@ -51,27 +40,14 @@ export const CartContextProvider = ({ children }: PropsWithChildren) => {
     }
 
     setCartItemInStorage(cartItems);
-  }, [cartItems]);
+  }, [cartItems, firstFlag]);
 
   const addItem = (item: CartItem) => {
-    setCartItems((prevState) => {
-      let itemCount = 0;
-
-      const filteredList = prevState.filter((listItem) => {
-        if (listItem.id === item.id) {
-          itemCount = listItem.count;
-          return false;
-        }
-        return true;
-      });
-
-      itemCount++;
-      return [...filteredList, { ...item, count: itemCount }];
-    });
+    setCartItems((prevState) => getCartWithNewItem(prevState, item));
   };
 
   const removeItem = (id: string) => {
-    setCartItems((prevState) => prevState.filter((listItem) => listItem.id !== id));
+    setCartItems((prevState) => getCartWithoutItem(prevState, id));
   };
 
   const contextValue: CartState = {
