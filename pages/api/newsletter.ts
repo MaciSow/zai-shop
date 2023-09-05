@@ -20,7 +20,7 @@ const handler: NextApiHandler = async (req, res) => {
   //place for optional private keys from .env
   const PROJECT_AREA = process.env.PROJECT_AREA;
   if (!PROJECT_AREA) {
-    return res.status(500).json({ error: 'Environment variable missing' });
+    return res.status(502).json({ error: 'Environment variable missing' });
   }
 
   const { errors, data } = await apolloClient.mutate<
