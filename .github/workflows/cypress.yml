@@ -10,8 +10,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      # Install NPM dependencies, cache them correctly
-      # and run all Cypress tests
       - name: Cypress run
         uses: cypress-io/github-action@v5
         env:
@@ -20,7 +18,8 @@ jobs:
           build: yarn build
           start: yarn start
           browser: chrome
-      - uses: actions/upload-artifact@v3
+      - name: Upload failure screenshots
+        uses: actions/upload-artifact@v3
         if: failure()
         with:
           name: cypress-screenshots
