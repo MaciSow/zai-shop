@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { NewsletterFormView } from '@/components/NewsletterForm';
 import { jest, describe, expect, it } from '@jest/globals';
 
@@ -7,7 +7,9 @@ describe('Newsletter', () => {
     const success = true;
     const onSubmit = jest.fn();
 
-    render(<NewsletterFormView onSubmit={onSubmit} success={success} />);
+    act(() => {
+      render(<NewsletterFormView onSubmit={onSubmit} success={success} />);
+    });
 
     const successMessage = screen.queryByTestId('newsletter-success');
     expect(successMessage).toBeInTheDocument();
@@ -17,26 +19,31 @@ describe('Newsletter', () => {
     const success = false;
     const onSubmit = jest.fn();
 
-    render(<NewsletterFormView onSubmit={onSubmit} success={success} />);
+    act(() => {
+      render(<NewsletterFormView onSubmit={onSubmit} success={success} />);
+    });
 
     const successMessage = screen.queryByTestId('newsletter-success');
     expect(successMessage).not.toBeInTheDocument();
   });
 
-  it(`shouldn't submit empty form when button is clicked`, () => {
+  it(`shouldn't submit empty form when button is clicked`, async () => {
     const onSubmit = jest.fn();
+    act(() => {
+      render(<NewsletterFormView onSubmit={onSubmit} success={false} />);
+    });
 
-    render(<NewsletterFormView onSubmit={onSubmit} success={false} />);
     const button = screen.getByTestId('newsletter-submit');
-
     fireEvent.click(button);
-    expect(onSubmit).not.toHaveBeenCalled();
+
+    await waitFor(() => expect(onSubmit).not.toHaveBeenCalled());
   });
 
   it(`should submit filled form when button is clicked`, async () => {
     const onSubmit = jest.fn();
-
-    render(<NewsletterFormView onSubmit={onSubmit} success={false} />);
+    act(() => {
+      render(<NewsletterFormView onSubmit={onSubmit} success={false} />);
+    });
     const input = screen.getByTestId('newsletter-input');
     const button = screen.getByTestId('newsletter-submit');
 
